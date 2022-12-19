@@ -1,11 +1,11 @@
 Model Information:
-* title:	Kagura Rainy Walk
-* source:	https://sketchfab.com/3d-models/kagura-rainy-walk-0cfd475a4df048f1a5116748772fef9f
-* author:	Kyy.Mp4 (https://sketchfab.com/skyzoofficial122)
+* title:	Hunter
+* source:	https://sketchfab.com/3d-models/hunter-69c20058087241fcbd074ddbf6a8c47e
+* author:	vasian-65 (https://sketchfab.com/vasian-65)
 
 Model License:
 * license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
 * requirements:	Author must be credited. Commercial use is allowed.
 
 If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
-This work is based on "Kagura Rainy Walk" (https://sketchfab.com/3d-models/kagura-rainy-walk-0cfd475a4df048f1a5116748772fef9f) by Kyy.Mp4 (https://sketchfab.com/skyzoofficial122) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+This work is based on "Hunter" (https://sketchfab.com/3d-models/hunter-69c20058087241fcbd074ddbf6a8c47e) by vasian-65 (https://sketchfab.com/vasian-65) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
