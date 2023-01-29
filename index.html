@@ -1,25 +1,36 @@
 <!DOCTYPE html>
 <html>
-  <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
-  <!-- we import arjs version without NFT but with marker + location based support -->
-  <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
-  <!-- animation of the gltf-model -->
-  <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.0/dist/aframe-extras.min.js"></script>
+  <head>
+    <title>Chat with OpenAI GPT-3</title>
+  </head>
+  <body>
+    <h1>Chat with OpenAI GPT-3</h1>
+    <input type="text" id="prompt" />
+    <button id="submit">Submit</button>
+    <br />
+    <br />
+    <div id="response"></div>
+    <script src="https://cdn.jsdelivr.net/npm/openai@3.0.0/dist/openai.min.js"></script>
+    <script>
+      const model = new openai.GPT3();
 
-  <script type="text/javascript">
-    alert("第9版");
-  </script>
-  <body style="margin : 0px; overflow: hidden;">
-    <a-scene embedded arjs>
-        <a-marker type="pattern" preset="custom" url="assets/pattern-marker.patt">
-        <a-entity
-          position="0 0 0"
-          scale="1.0 1.0 1.0"
-          gltf-model="assets/scene.gltf"
-          animation-mixer
-        ></a-entity>
-      </a-marker>
-      <a-entity camera></a-entity>
-    </a-scene>
+      async function chatWithGPT3(prompt) {
+        const response = await model.completions({
+          prompt: prompt,
+          max_tokens: 2048,
+          n: 1,
+          stop: "",
+          temperature: 0.5
+        });
+
+        return response.choices[0].text;
+      }
+
+      document.getElementById("submit").addEventListener("click", async () => {
+        const prompt = document.getElementById("prompt").value;
+        const response = await chatWithGPT3(prompt);
+        document.getElementById("response").innerHTML = response;
+      });
+    </script>
   </body>
 </html>
