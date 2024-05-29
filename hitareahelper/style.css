@@ -56,3 +56,9 @@ input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+
+span
+{
+    color: white;
+    font-size: medium;
+}

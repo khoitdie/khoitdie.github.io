@@ -222,6 +222,8 @@ buttonConvert.addEventListener('click', function () {
     tValue += "]"
     textbox.value = tValue
 })
+let tip = document.createElement('span');
+tip.innerHTML = "＞anchor: "
 
 let anchorX = document.createElement('input');
 anchorX.type = 'number'
@@ -247,6 +249,7 @@ anchorY.onchange = ()=>{
 
 divA.appendChild(buttonLoad);
 divA.appendChild(buttonConvert);
+divA.appendChild(tip);
 divA.appendChild(anchorX);
 divA.appendChild(anchorY);
 
