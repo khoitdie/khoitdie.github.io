@@ -210,17 +210,47 @@ let buttonConvert = document.createElement('button');
 let textbox = document.createElement('input');
 buttonConvert.innerText = '轉換';
 buttonConvert.addEventListener('click', function () {
+    let fixX = app.screen.width * anchorX.value;
+    let fixY = app.screen.height * anchorY.value;
+    console.log(`[${fixX}, ${fixY}]`)
+
     let tValue = "["
     points.forEach(p => {
-        tValue += `${p.x}, ${p.y}, `
+        tValue += `${p.x - fixX}, ${p.y - fixY}, `
     });
     tValue = tValue.slice(0, -2);
     tValue += "]"
     textbox.value = tValue
 })
 
+let anchorX = document.createElement('input');
+anchorX.type = 'number'
+anchorX.style.width = '80px';
+anchorX.style.textAlign = 'center';
+anchorX.value = 0
+anchorX.onchange = ()=>{
+    anchorX.value = anchorX.value == "" ? 0 : anchorX.value;
+    anchorX.value = anchorX.value < 0 ? 0 : anchorX.value;
+    anchorX.value = anchorX.value > 1 ? 1 : anchorX.value;
+}
+
+let anchorY = document.createElement('input');
+anchorY.type = 'number'
+anchorY.style.width = '80px';
+anchorY.style.textAlign = 'center';
+anchorY.value = 0;
+anchorY.onchange = ()=>{
+    anchorY.value = anchorY.value == "" ? 0 : anchorY.value;
+    anchorY.value = anchorY.value < 0 ? 0 : anchorY.value;
+    anchorY.value = anchorY.value > 1 ? 1 : anchorY.value;
+}
+
 divA.appendChild(buttonLoad);
 divA.appendChild(buttonConvert);
+divA.appendChild(anchorX);
+divA.appendChild(anchorY);
+
+divA.appendChild(document.createElement('br'));
 divA.appendChild(textbox);
 document.body.appendChild(divA);
 document.body.appendChild(app.canvas);
