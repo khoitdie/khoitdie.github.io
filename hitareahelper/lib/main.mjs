@@ -237,7 +237,7 @@ buttonConvert.addEventListener('click', function () {
     let fixY = app.screen.height * anchorY.value;
     console.log(`[${fixX}, ${fixY}]`)
 
-    let tValue = "["
+    let tValue = "\n["
     for (let i = 0; i < points.length; i++) {
         let p = points[i];
         if (i > 0 && i % 5 == 0) tValue += '\n'
@@ -246,7 +246,7 @@ buttonConvert.addEventListener('click', function () {
 
     tValue = tValue.slice(0, -1);
     tValue += "]"
-    tValue += `//anchor.set(${anchorX.value}, ${anchorY.value})`
+    tValue += `//anchor.set(${anchorX.value}, ${anchorY.value})\n`
     textbox.value = tValue
 })
 let tip = document.createElement('span');
