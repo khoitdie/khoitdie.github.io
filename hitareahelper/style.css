@@ -51,10 +51,19 @@ input
     box-sizing: border-box;
 }
 
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+textarea
+{
+    width: 475px;
+    height: 100px;
+    margin: 5px;
+    background-color: rgb(46, 46, 46);
+    border-radius: 5px;
+    border-color: darkgray;
+    border-style: solid;
+    color: white;
+    font-size: medium;
+    box-sizing: border-box;
+    resize: vertical;
 }
 
 span

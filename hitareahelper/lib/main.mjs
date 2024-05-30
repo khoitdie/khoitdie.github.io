@@ -11,15 +11,28 @@ const sprite = new Sprite();
 const polygonContainer = new Container();
 const lineContainer = new Container();
 const pointsContainer = new Container();
-app.stage.addChild(sprite, polygonContainer, lineContainer, pointsContainer);
+
+let anchor = new Graphics();
+anchor.rect(-3, -12, 6, 24);
+anchor.rect(-12, -3, 24, 6);
+anchor.circle(0, 0, 5);
+anchor.fill(0x000000);
+
+anchor.rect(-1, -10, 2, 20);
+anchor.rect(-10, -1, 20, 2);
+anchor.circle(0, 0, 3);
+anchor.fill(0xffff00);
+anchor.eventMode = "none";
+
+app.stage.addChild(sprite, polygonContainer, lineContainer, pointsContainer, anchor);
 
 let points = [];
 let polygon = new Graphics();
 let origin = new Graphics();
-origin.circle(0, 0, 5);
-origin.fill(0xffff00);
-origin.x = app.screen.width / 2
-origin.y = app.screen.height / 2
+origin.circle(0, 0, 12);
+origin.fill(0xff0000, 0.2);
+origin.circle(0, 0, 10);
+origin.stroke({ width: 2, color: 0xff0000, alpha: 0.5 });
 
 origin.blendMode = 1;
 origin.eventMode = "dynamic";
@@ -31,7 +44,6 @@ origin.on('pointerdown', (e)=>{
         movePolygon = true
     }
 });
-pointsContainer.addChild(origin);
 
 app.stage.on('pointermove', (event)=>{
     if (movePolygon) {
@@ -84,10 +96,21 @@ function addPoint(x, y, index) {
     return point;
 }
 
-addPoint(app.screen.width / 2 - 100, app.screen.height / 2 - 100, 0)
-addPoint(app.screen.width / 2 + 100, app.screen.height / 2 - 100, 1)
-addPoint(app.screen.width / 2 + 100, app.screen.height / 2 + 100, 2)
-addPoint(app.screen.width / 2 - 100, app.screen.height / 2 + 100, 3)
+setPositions(app.screen.width / 2, app.screen.height / 2)
+function setPositions(x, y)
+{
+    pointsContainer.children = [];
+
+    let size = 50;
+    origin.x = x
+    origin.y = y
+    pointsContainer.addChild(origin);
+
+    addPoint(x - size, y - size, 0)
+    addPoint(x + size, y - size, 1)
+    addPoint(x + size, y + size, 2)
+    addPoint(x - size, y + size, 3)
+}
 
 function drawPolygon() {
     polygon.clear();
@@ -207,7 +230,7 @@ buttonLoad.addEventListener('click', function () {
 });
 let divA = document.createElement('div');
 let buttonConvert = document.createElement('button');
-let textbox = document.createElement('input');
+let textbox = document.createElement('textarea');
 buttonConvert.innerText = '轉換';
 buttonConvert.addEventListener('click', function () {
     let fixX = app.screen.width * anchorX.value;
@@ -215,11 +238,15 @@ buttonConvert.addEventListener('click', function () {
     console.log(`[${fixX}, ${fixY}]`)
 
     let tValue = "["
-    points.forEach(p => {
-        tValue += `${p.x - fixX}, ${p.y - fixY}, `
-    });
-    tValue = tValue.slice(0, -2);
+    for (let i = 0; i < points.length; i++) {
+        let p = points[i];
+        if (i > 0 && i % 5 == 0) tValue += '\n'
+        tValue += `${p.x - fixX},${p.y - fixY},`
+    }
+
+    tValue = tValue.slice(0, -1);
     tValue += "]"
+    tValue += `//anchor.set(${anchorX.value}, ${anchorY.value})`
     textbox.value = tValue
 })
 let tip = document.createElement('span');
@@ -227,6 +254,7 @@ tip.innerHTML = "＞anchor: "
 
 let anchorX = document.createElement('input');
 anchorX.type = 'number'
+anchorX.step = 0.05
 anchorX.style.width = '80px';
 anchorX.style.textAlign = 'center';
 anchorX.value = 0
@@ -234,9 +262,11 @@ anchorX.onchange = ()=>{
     anchorX.value = anchorX.value == "" ? 0 : anchorX.value;
     anchorX.value = anchorX.value < 0 ? 0 : anchorX.value;
     anchorX.value = anchorX.value > 1 ? 1 : anchorX.value;
+    anchor.x = app.screen.width * anchorX.value;
 }
 
 let anchorY = document.createElement('input');
+anchorY.step = 0.05
 anchorY.type = 'number'
 anchorY.style.width = '80px';
 anchorY.style.textAlign = 'center';
@@ -245,6 +275,7 @@ anchorY.onchange = ()=>{
     anchorY.value = anchorY.value == "" ? 0 : anchorY.value;
     anchorY.value = anchorY.value < 0 ? 0 : anchorY.value;
     anchorY.value = anchorY.value > 1 ? 1 : anchorY.value;
+    anchor.y = app.screen.height * anchorY.value;
 }
 
 divA.appendChild(buttonLoad);
