@@ -244,10 +244,9 @@ buttonConvert.addEventListener('click', function () {
     for (let i = 0; i < points.length; i++) {
         let p = points[i];
         if (i > 0 && i % 5 == 0) tValue += '\n'
-        tValue += `${p.x - fixX},${p.y - fixY},`
+        tValue += `${parseFloat((p.x - fixX).toFixed(2))},${parseFloat((p.y - fixY).toFixed(2))}, `
     }
-
-    tValue = tValue.slice(0, -1);
+    tValue = tValue.slice(0, -2);
     tValue += "]);"
     textbox.value = tValue
     textbox.select();
