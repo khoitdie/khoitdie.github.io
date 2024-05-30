@@ -231,11 +231,12 @@ buttonLoad.addEventListener('click', function () {
 let divA = document.createElement('div');
 let buttonConvert = document.createElement('button');
 let textbox = document.createElement('textarea');
+//textbox.onfocus
+
 buttonConvert.innerText = '轉換';
 buttonConvert.addEventListener('click', function () {
     let fixX = app.screen.width * anchorX.value;
     let fixY = app.screen.height * anchorY.value;
-    console.log(`[${fixX}, ${fixY}]`)
 
     let tValue = "\n["
     for (let i = 0; i < points.length; i++) {
@@ -248,6 +249,7 @@ buttonConvert.addEventListener('click', function () {
     tValue += "]"
     tValue += `//anchor.set(${anchorX.value}, ${anchorY.value})\n`
     textbox.value = tValue
+    textbox.select();
 })
 let tip = document.createElement('span');
 tip.innerHTML = "＞anchor: "
