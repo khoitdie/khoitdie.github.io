@@ -238,7 +238,9 @@ buttonConvert.addEventListener('click', function () {
     let fixX = app.screen.width * anchorX.value;
     let fixY = app.screen.height * anchorY.value;
 
-    let tValue = "\n["
+    let tValue = ""
+    tValue += `.anchor.set(${anchorX.value}, ${anchorY.value})\n`
+    tValue += ".hitArea = new Polygon([\n"
     for (let i = 0; i < points.length; i++) {
         let p = points[i];
         if (i > 0 && i % 5 == 0) tValue += '\n'
@@ -246,8 +248,7 @@ buttonConvert.addEventListener('click', function () {
     }
 
     tValue = tValue.slice(0, -1);
-    tValue += "]"
-    tValue += `//anchor.set(${anchorX.value}, ${anchorY.value})\n`
+    tValue += "]);"
     textbox.value = tValue
     textbox.select();
 })
