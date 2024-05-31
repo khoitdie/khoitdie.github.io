@@ -2,7 +2,11 @@ import { Application, Sprite, Graphics, Assets, Point, Container } from './pixi.
 
 const app = new Application();
 await app.init({ background: '#81C0C0', width: 500, height: 500 });
-let sinScale = 0;
+
+const viewport = new Container();
+app.stage.addChild(viewport);
+let vpScale = 100;
+let dataWH = [500, 500];
 
 const hitPos = new Point();
 let movePolygon = false;
@@ -24,7 +28,7 @@ anchor.circle(0, 0, 3);
 anchor.fill(0xffff00);
 anchor.eventMode = "none";
 
-app.stage.addChild(sprite, polygonContainer, lineContainer, pointsContainer, anchor);
+viewport.addChild(sprite, polygonContainer, lineContainer, pointsContainer, anchor);
 
 let points = [];
 let polygon = new Graphics();
@@ -37,7 +41,7 @@ origin.stroke({ width: 2, color: 0xff0000, alpha: 0.5 });
 origin.blendMode = 1;
 origin.eventMode = "dynamic";
 origin.cursor = 'pointer';
-origin.on('pointerdown', (e)=>{
+origin.on('pointerdown', (e) => {
     if (!movePolygon) {
         hitPos.x = e.global.x;
         hitPos.y = e.global.y;
@@ -45,21 +49,21 @@ origin.on('pointerdown', (e)=>{
     }
 });
 
-app.stage.on('pointermove', (event)=>{
+app.stage.on('pointermove', (event) => {
     if (movePolygon) {
         const offsetX = event.global.x - hitPos.x;
         const offsetY = event.global.y - hitPos.y;
         points.forEach(p => {
-            p.x += offsetX;
-            p.y += offsetY;
+            p.x += offsetX / (vpScale / 100);
+            p.y += offsetY / (vpScale / 100);
         });
         hitPos.x = event.data.global.x; // 更新 hitPos
         hitPos.y = event.data.global.y;
     }
 });
 
-origin.on('pointerup', ()=>{movePolygon = false;});
-origin.on('pointerupoutside', ()=>{movePolygon = false;});
+origin.on('pointerup', () => { movePolygon = false; });
+origin.on('pointerupoutside', () => { movePolygon = false; });
 
 polygonContainer.addChild(polygon);
 
@@ -72,10 +76,10 @@ function addPoint(x, y, index) {
     point.eventMode = "dynamic";
     point.cursor = 'pointer';
     point.on('pointerover', (event) => {
-        point.scale.set(1.5);
+        point.scale.set(1.5 / (vpScale / 100));
     })
-    point.on('pointerout', () => {point.scale.set(1);})
-    point.on('pointerupoutside', () => {point.scale.set(1);})
+    point.on('pointerout', () => { point.scale.set(1 / (vpScale / 100)); })
+    point.on('pointerupoutside', () => { point.scale.set(1 / (vpScale / 100)); })
 
     point.on('pointerdown', (event) => {
         if (event.data.button === 0) {
@@ -96,12 +100,11 @@ function addPoint(x, y, index) {
     return point;
 }
 
-setPositions(app.screen.width / 2, app.screen.height / 2)
-function setPositions(x, y)
-{
+setPositions(20, 20)
+function setPositions(x, y) {
     pointsContainer.children = [];
 
-    let size = 50;
+    let size = 20;
     origin.x = x
     origin.y = y
     pointsContainer.addChild(origin);
@@ -121,12 +124,12 @@ function drawPolygon() {
         let line = new Graphics();
         line.moveTo(point.x, point.y);
         line.lineTo(next_p.x, next_p.y);
-        line.stroke({ width: 4, color: 0xff0000 });
+        line.stroke({ width: 4 / (vpScale/100), color: 0xff0000 });
         line.alpha = 0.5;
         line.eventMode = "dynamic";
         line.cursor = 'pointer';
-        line.on('pointerdown', (e)=>{
-            point = addPoint(e.global.x, e.global.y, i+1);
+        line.on('pointerdown', (e) => {
+            point = addPoint(e.global.x / (vpScale / 100), e.global.y / (vpScale / 100), i + 1);
             addDrag(point);
         });
 
@@ -178,11 +181,10 @@ app.stage.hitArea = app.screen;
 app.stage.on('pointerup', onDragEnd);
 app.stage.on('pointerupoutside', onDragEnd);
 
-function addDrag(point)
-{
+function addDrag(point) {
     point.alpha = 0.5;
     dragTarget = point;
-    app.stage.on('pointermove', onDragMove); 
+    app.stage.on('pointermove', onDragMove);
 }
 
 function onDragMove(event) {
@@ -201,14 +203,13 @@ function onDragEnd() {
 
 app.canvas.addEventListener('contextmenu', (e) => {
     e.preventDefault();
-  });
+});
 
 app.ticker.add((time) => {
     drawPolygon()
     let result = calculatePolygonCentroid(points);
     origin.x = result.x;
     origin.y = result.y;
-    sinScale = Math.sin(time.lastTime / 50)
 });
 
 
@@ -222,7 +223,8 @@ buttonLoad.addEventListener('click', function () {
         reader.onload = async function (event) {
             const texture = await Assets.load(event.target.result);
             sprite.texture = texture;
-            app.renderer.resize(sprite.width, sprite.height);
+            app.renderer.resize(sprite.width * vpScale / 100, sprite.height * vpScale / 100);
+            dataWH = [sprite.width, sprite.height]
         };
         reader.readAsDataURL(e.target.files[0]);
     };
@@ -231,7 +233,25 @@ buttonLoad.addEventListener('click', function () {
 let divA = document.createElement('div');
 let buttonConvert = document.createElement('button');
 let textbox = document.createElement('textarea');
-//textbox.onfocus
+
+
+let buttonScaleUp = document.createElement('button');
+let buttonScaleDown = document.createElement('button');
+buttonScaleUp.innerText = '+';
+buttonScaleDown.innerText = '-';
+buttonScaleUp.addEventListener('click', function () {
+    vpScale = Math.min(vpScale + 20, 500);
+    app.renderer.resize(dataWH[0] * vpScale / 100, dataWH[1] * vpScale / 100);
+    viewport.scale.set(vpScale / 100);
+    points.forEach(point => { point.scale.set(1 / (vpScale / 100)); });
+
+});
+buttonScaleDown.addEventListener('click', function () {
+    vpScale = Math.max(vpScale - 20, 20);
+    app.renderer.resize(dataWH[0] * vpScale / 100, dataWH[1] * vpScale / 100);
+    viewport.scale.set(vpScale / 100);
+    points.forEach(point => { point.scale.set(1 / (vpScale / 100)); });
+});
 
 buttonConvert.innerText = '轉換';
 buttonConvert.addEventListener('click', function () {
@@ -260,7 +280,7 @@ anchorX.step = 0.05
 anchorX.style.width = '80px';
 anchorX.style.textAlign = 'center';
 anchorX.value = 0
-anchorX.onchange = ()=>{
+anchorX.onchange = () => {
     anchorX.value = anchorX.value == "" ? 0 : anchorX.value;
     anchorX.value = anchorX.value < 0 ? 0 : anchorX.value;
     anchorX.value = anchorX.value > 1 ? 1 : anchorX.value;
@@ -273,7 +293,7 @@ anchorY.type = 'number'
 anchorY.style.width = '80px';
 anchorY.style.textAlign = 'center';
 anchorY.value = 0;
-anchorY.onchange = ()=>{
+anchorY.onchange = () => {
     anchorY.value = anchorY.value == "" ? 0 : anchorY.value;
     anchorY.value = anchorY.value < 0 ? 0 : anchorY.value;
     anchorY.value = anchorY.value > 1 ? 1 : anchorY.value;
@@ -285,6 +305,8 @@ divA.appendChild(buttonConvert);
 divA.appendChild(tip);
 divA.appendChild(anchorX);
 divA.appendChild(anchorY);
+divA.appendChild(buttonScaleUp);
+divA.appendChild(buttonScaleDown);
 
 divA.appendChild(document.createElement('br'));
 divA.appendChild(textbox);
