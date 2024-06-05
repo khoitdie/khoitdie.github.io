@@ -124,7 +124,7 @@ function drawPolygon() {
         let line = new Graphics();
         line.moveTo(point.x, point.y);
         line.lineTo(next_p.x, next_p.y);
-        line.stroke({ width: 4 / (vpScale/100), color: 0xff0000 });
+        line.stroke({ width: 4 / (vpScale / 100), color: 0xff0000 });
         line.alpha = 0.5;
         line.eventMode = "dynamic";
         line.cursor = 'pointer';
@@ -234,7 +234,7 @@ let divA = document.createElement('div');
 let buttonConvert = document.createElement('button');
 let textbox = document.createElement('textarea');
 
-
+//Scale the Viewport
 let buttonScaleUp = document.createElement('button');
 let buttonScaleDown = document.createElement('button');
 buttonScaleUp.innerText = '+';
@@ -244,7 +244,6 @@ buttonScaleUp.addEventListener('click', function () {
     app.renderer.resize(dataWH[0] * vpScale / 100, dataWH[1] * vpScale / 100);
     viewport.scale.set(vpScale / 100);
     points.forEach(point => { point.scale.set(1 / (vpScale / 100)); });
-
 });
 buttonScaleDown.addEventListener('click', function () {
     vpScale = Math.max(vpScale - 20, 20);
@@ -253,11 +252,11 @@ buttonScaleDown.addEventListener('click', function () {
     points.forEach(point => { point.scale.set(1 / (vpScale / 100)); });
 });
 
+//Button of Convert.
 buttonConvert.innerText = '轉換';
 buttonConvert.addEventListener('click', function () {
     let fixX = app.screen.width * anchorX.value;
     let fixY = app.screen.height * anchorY.value;
-
     let tValue = ""
     tValue += `.anchor.set(${anchorX.value}, ${anchorY.value})\n`
     tValue += ".hitArea = new Polygon([\n"
@@ -274,6 +273,7 @@ buttonConvert.addEventListener('click', function () {
 let tip = document.createElement('span');
 tip.innerHTML = "＞anchor: "
 
+//Set Image Anchor
 let anchorX = document.createElement('input');
 anchorX.type = 'number'
 anchorX.step = 0.05
@@ -287,6 +287,7 @@ anchorX.onchange = () => {
     anchor.x = app.screen.width * anchorX.value;
 }
 
+//Set Image Anchor
 let anchorY = document.createElement('input');
 anchorY.step = 0.05
 anchorY.type = 'number'
