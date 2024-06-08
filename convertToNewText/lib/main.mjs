@@ -1,5 +1,5 @@
-import { Application, Container, Graphics } from './pixi.mjs';
-import { keyboardGetZhuyin } from './keyboard.mjs';
+import { Application, Container, Graphics, Assets} from './pixi.mjs';
+import { keyboardGetZhuyin, codeToText } from './keyboard.mjs';
 import { TextInput } from './textInput.mjs';
 
 let nowIndex = 0;
@@ -13,6 +13,9 @@ document.body.appendChild(app.canvas);
 const viewport = new Container();
 app.stage.addChild(viewport);
 
+Assets.addBundle('fonts', [{ alias: 'YurenMystery', src: './YurenMystery.ttf' },]);
+await Assets.loadBundle('fonts');
+
 const indexCursor = new Graphics();
 indexCursor.rect(-2, -50, 4, 50);
 indexCursor.fill(0xff8000);
@@ -25,7 +28,7 @@ document.addEventListener('keypress', (event) => {
 });
 
 document.addEventListener('keydown', (event) => {
-    console.log(event.key)
+    //console.log(event.code)
 
     if (event.key === 'Backspace') {
         backspaceTextInput();
@@ -48,11 +51,13 @@ document.addEventListener('keydown', (event) => {
 });
 
 function eventGetCode(arr) {
+    console.log(arr)
     allTextData.splice(nowIndex, 0, arr);
 
     let textInput = new TextInput(arr);
     textInput.showText.text = arr[1];
     textArray.splice(nowIndex, 0, textInput);
+    textInput.textShow.text = codeToText(arr[0]);
 
     textInput.container.eventMode = 'static';
     textInput.container.cursor = 'pointer';
@@ -66,6 +71,7 @@ function eventGetCode(arr) {
 
     renderTexts();
 }
+
 function backspaceTextInput() {
     if (nowIndex > 0) {
         nowIndex--;
