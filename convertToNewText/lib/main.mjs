@@ -5,6 +5,7 @@ import { TextInput } from './textInput.mjs';
 let nowIndex = 0;
 const allTextData = [];
 const textArray = [];
+const outputText = [];
 
 const app = new Application();
 await app.init({ background: '#272727', width: 1280, height: 720 });
@@ -51,13 +52,15 @@ document.addEventListener('keydown', (event) => {
 });
 
 function eventGetCode(arr) {
-    console.log(arr)
+    let finalText = codeToText(arr[0])
     allTextData.splice(nowIndex, 0, arr);
 
     let textInput = new TextInput(arr);
     textInput.showText.text = arr[1];
     textArray.splice(nowIndex, 0, textInput);
-    textInput.textShow.text = codeToText(arr[0]);
+    textInput.textShow.text = finalText;
+
+    outputText.splice(nowIndex, 0, finalText);
 
     textInput.container.eventMode = 'static';
     textInput.container.cursor = 'pointer';
@@ -70,12 +73,14 @@ function eventGetCode(arr) {
     textInputContainer.addChild(textInput.container);
 
     renderTexts();
+    //console.log(outputText.toString())
 }
 
 function backspaceTextInput() {
     if (nowIndex > 0) {
         nowIndex--;
         allTextData.splice(nowIndex, 1);
+        outputText.splice(nowIndex, 1);
         const removedTextInput = textArray.splice(nowIndex, 1)[0];
         textInputContainer.removeChild(removedTextInput.container);
         renderTexts();
@@ -85,6 +90,7 @@ function backspaceTextInput() {
 function deleteTextInput() {
     if (nowIndex < textArray.length) {
         allTextData.splice(nowIndex, 1);
+        outputText.splice(nowIndex, 1);
         const removedTextInput = textArray.splice(nowIndex, 1)[0];
         textInputContainer.removeChild(removedTextInput.container);
         renderTexts();

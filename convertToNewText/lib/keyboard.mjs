@@ -26,47 +26,13 @@ function getFirstNonEmpty(arr) {
     return null;
 }
 
-
-// 定義轉換函數
 function toNumber(phonetic) {
     const phoneticToNumberMap = {
-        'ㄅ': 0,
-        'ㄆ': 1,
-        'ㄇ': 2,
-        'ㄈ': 3,
-        'ㄉ': 4,
-        'ㄊ': 5,
-        'ㄋ': 6,
-        'ㄌ': 7,
-        'ㄍ': 8,
-        'ㄎ': 9,
-        'ㄏ': 10,
-        'ㄐ': 11,
-        'ㄑ': 12,
-        'ㄒ': 13,
-        'ㄓ': 14,
-        'ㄔ': 15,
-        'ㄕ': 16,
-        'ㄖ': 17,
-        'ㄗ': 18,
-        'ㄘ': 19,
-        'ㄙ': 20,
-        'ㄧ': 21,
-        'ㄨ': 22,
-        'ㄩ': 23,
-        'ㄚ': 24,
-        'ㄛ': 25,
-        'ㄜ': 26,
-        'ㄝ': 27,
-        'ㄞ': 28,
-        'ㄟ': 29,
-        'ㄠ': 30,
-        'ㄡ': 31,
-        'ㄢ': 32,
-        'ㄣ': 33,
-        'ㄤ': 34,
-        'ㄥ': 35,
-        'ㄦ': 36
+        'ㄅ': 0, 'ㄆ': 1, 'ㄇ': 2, 'ㄈ': 3, 'ㄉ': 4, 'ㄊ': 5, 'ㄋ': 6, 'ㄌ': 7,
+        'ㄍ': 8, 'ㄎ': 9, 'ㄏ': 10, 'ㄐ': 11, 'ㄑ': 12, 'ㄒ': 13, 'ㄓ': 14, 'ㄔ': 15,
+        'ㄕ': 16, 'ㄖ': 17, 'ㄗ': 18, 'ㄘ': 19, 'ㄙ': 20, 'ㄧ': 21, 'ㄨ': 22, 'ㄩ': 23,
+        'ㄚ': 24, 'ㄛ': 25, 'ㄜ': 26, 'ㄝ': 27, 'ㄞ': 28, 'ㄟ': 29, 'ㄠ': 30, 'ㄡ': 31,
+        'ㄢ': 32, 'ㄣ': 33, 'ㄤ': 34, 'ㄥ': 35, 'ㄦ': 36
     };
     return phoneticToNumberMap[phonetic];
 }
@@ -113,8 +79,11 @@ function codeToText(code) {
     ];
 
     let typeCode = phoneticCharacters[code[0]];
+    if (typeCode != undefined) {
+        return typeCode[code[1] % typeCode.length];
 
-    return typeCode[code[1] % typeCode.length];
+    }
+    return ''
 }
 
 function getZhuyin(keyCode) {
