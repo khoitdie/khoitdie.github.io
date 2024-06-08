@@ -12,8 +12,7 @@ function keyboardGetZhuyin(event, callback)
         text.forEach(element => {
             showText += element;
         });
-
-        //console.log(`${firstCode + endCode} ( ${showText} )`);
+        
         callback([firstCode + endCode, showText])
         text = ['', '', '', ''];
     }

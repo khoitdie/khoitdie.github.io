@@ -26,7 +26,11 @@ document.addEventListener('keypress', (event) => {
 
 document.addEventListener('keydown', (event) => {
     console.log(event.key)
+
     if (event.key === 'Backspace') {
+        backspaceTextInput();
+
+    } else if (event.key === 'Delete') {
         deleteTextInput();
 
     } else if (event.key === 'ArrowLeft') {
@@ -36,10 +40,10 @@ document.addEventListener('keydown', (event) => {
         if (nowIndex < textArray.length) { nowIndex++; }
 
     } else if (event.key === 'ArrowUp') {
-        if (nowIndex >= 17) {nowIndex -= 17;}
+        if (nowIndex >= 17) { nowIndex -= 17; }
 
     } else if (event.key === 'ArrowDown') {
-        if (nowIndex + 17 < textArray.length) {nowIndex += 17;}
+        if (nowIndex + 17 < textArray.length) { nowIndex += 17; }
     }
 });
 
@@ -62,10 +66,18 @@ function eventGetCode(arr) {
 
     renderTexts();
 }
-
-function deleteTextInput() {
+function backspaceTextInput() {
     if (nowIndex > 0) {
         nowIndex--;
+        allTextData.splice(nowIndex, 1);
+        const removedTextInput = textArray.splice(nowIndex, 1)[0];
+        textInputContainer.removeChild(removedTextInput.container);
+        renderTexts();
+    }
+}
+
+function deleteTextInput() {
+    if (nowIndex < textArray.length) {
         allTextData.splice(nowIndex, 1);
         const removedTextInput = textArray.splice(nowIndex, 1)[0];
         textInputContainer.removeChild(removedTextInput.container);
@@ -81,6 +93,6 @@ function renderTexts() {
 }
 
 app.ticker.add((time) => {
-    indexCursor.position.set(nowIndex % 17 * 74 + 14, Math.floor(nowIndex / 17) * 101 + 80);
+    indexCursor.position.set(nowIndex % 17 * 74 + 14, Math.floor(nowIndex / 17) * 101 + 80 + 15);
     indexCursor.alpha = 0.75 + Math.sin(time.lastTime / 100) * 0.25;
 });
