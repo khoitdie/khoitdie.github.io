@@ -1,4 +1,4 @@
-import { Application, Container, Graphics, Assets} from './pixi.mjs';
+import { Application, Container, Graphics, Assets } from './pixi.mjs';
 import { keyboardGetZhuyin, codeToText } from './keyboard.mjs';
 import { TextInput } from './textInput.mjs';
 
@@ -48,8 +48,18 @@ document.addEventListener('keydown', (event) => {
 
     } else if (event.key === 'ArrowDown') {
         if (nowIndex + 17 < textArray.length) { nowIndex += 17; }
+    } else if (event.key === 'F9') {
+        convertToText();
     }
 });
+
+function convertToText() {
+    let text = ''
+    outputText.forEach(element => {
+        text += element == '' ? '　' : element;
+    });
+    console.log(text);
+}
 
 function eventGetCode(arr) {
     let finalText = codeToText(arr[0])
