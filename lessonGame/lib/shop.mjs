@@ -3,7 +3,7 @@ import { setInteractive } from './mouse.mjs';
 import { actor } from './actor.mjs';
 import { cursor } from "./mouse.mjs";
 import { messagewindow } from "./windows.mjs";
-import { global } from "./global.mjs";
+import { audio, global } from "./global.mjs";
 import { inventory } from "./inventory.mjs";
 import { itemList } from "./gameData/itemsData.mjs";
 
@@ -276,6 +276,8 @@ class Shop {
             let txt = `背包滿了，還有 ${result} 個${itemList[itemInfo.id].name}放不下`
             messagewindow.addText({ profile: "actor", text: txt })
         } else {
+            audio.coins[audio.index % audio.coins.length].play()
+            audio.index++;
             actor.money -= itemInfo.price;
             shopItems[i].num -= 1;
             this.refreshItem(i);

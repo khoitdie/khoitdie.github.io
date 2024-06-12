@@ -16,7 +16,6 @@ for (let i = 0; i < 20; i++) {
     coin.volume = Math.random() * 0.4 + 0.5;
     audio.coins.push(coin);
 }
-
 audio.index = 0;
 
 global.animateToTarget = function (current, target, speed = 0.1) {
