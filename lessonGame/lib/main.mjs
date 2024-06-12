@@ -1,6 +1,6 @@
 import { Application, Texture, Sprite, Container, SCALE_MODES } from './pixi.mjs'
 import { messagewindow } from './windows.mjs';
-import { Shop } from './shop.mjs';
+import { shop } from './shop.mjs';
 import { AssetsLoader } from './assets.mjs';
 import { cursor } from './mouse.mjs';
 import { global } from './global.mjs';
@@ -52,13 +52,12 @@ hitContainer.on('pointermove', (e)=>{
 cursor.init();
 gameMapManager.init();
 inventory.init();
+shop.init();
 messagewindow.init();
 app.stage.addChild(cursor.container);
 mapContainer.addChild(gameMapManager.container);
-//gameMap.setActor();
 
-//建立訊息視窗、商店視窗。
-let shop = new Shop();
+
 
 uiContainer.addChild(
     messagewindow.container,

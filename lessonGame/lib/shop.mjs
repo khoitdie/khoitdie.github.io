@@ -7,21 +7,19 @@ import { audio, global } from "./global.mjs";
 import { inventory } from "./inventory.mjs";
 import { itemList } from "./gameData/itemsData.mjs";
 
-const shopItems = [
+let shopItems = [
     { id: 0, num: 10 },
     { id: 0, num: 8 },
     { id: 1, num: 7 },
     { id: 3, num: 10 },
     { id: 2, num: 5 },
     { id: 4, num: 2 },
-    { id: 5, num: 1 },
     { id: 0, num: 10 },
     { id: 0, num: 8 },
     { id: 1, num: 7 },
     { id: 3, num: 10 },
     { id: 2, num: 5 },
     { id: 4, num: 2 },
-    { id: 5, num: 1 },
 ]
 
 const shopMaxNum = 8;
@@ -56,8 +54,6 @@ class Shop {
                 this.shopContainer.scale.set(0);
             }
         });
-
-        this.init();
     }
 
     init() {
@@ -124,7 +120,6 @@ class Shop {
         );
 
         this.innerContainer.addChild(this.mask, this.itemsContainer);
-        this.resetItems();
         this.setShopIcon();
     }
 
@@ -256,7 +251,11 @@ class Shop {
     }
 
     resetItems() {
-
+        shopItems = [
+            { id: 5, num: 99 },
+            { id: 6, num: 99 },
+            { id: 7, num: 99 },
+        ]
     }
 
     //處理購買物品
@@ -304,4 +303,6 @@ class Shop {
     }
 }
 
-export { Shop }
+const shop = new Shop();
+
+export { shop }

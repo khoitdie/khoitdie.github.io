@@ -1,12 +1,12 @@
 import { Assets } from './pixi.mjs'
 
 const resource = [
-    'cat', 'dollar', 'message',
+    'cat', 'dollar', 'spider', 
     'shopping-cart', 'verified', 'tree',
     'mouse', 'mouse-pointer', 'place',
 ];
 const resourceJPG = []
-const itemResourece = ['carrot', 'chili-pepper', 'grape', 'corn', 'apple']
+const itemResourece = ['carrot', 'chili-pepper', 'grape', 'corn', 'apple', 'brain', 'drink', 'smoothie']
 
 class AssetsLoader {
     constructor() {
