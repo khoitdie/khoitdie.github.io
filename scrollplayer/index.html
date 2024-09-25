@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>播放器</title>
+    <title>5fps播放器</title>
     <style>
         body, html {
             height: 300%;
@@ -112,7 +112,7 @@
             
             frames[index] = tempCanvas.toDataURL('image/jpeg', 0.8);
             frameCount++;
-            const progress = frameCount / Math.ceil(video.duration * 15);
+            const progress = frameCount / Math.ceil(video.duration * 5);
             loadingIndicator.textContent = `正在載入 ${Math.round(progress * 100)}%`;
             
             if (progress >= 1) {
@@ -133,7 +133,7 @@
         });
 
         async function extractFrames() {
-            const frameInterval = 1 / 15; // 15fps
+            const frameInterval = 1 / 5; // 15fps
             let currentTime = 0;
             let index = 0;
 
